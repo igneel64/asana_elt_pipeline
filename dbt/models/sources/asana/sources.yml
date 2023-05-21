@@ -1,0 +1,97 @@
+version: 2
+
+sources:
+  - name: asana
+    description: "Source tables resulting from the extraction processes of the node_loader system."
+    database:  |
+          {%- if target.name == "prod" -%} {{ var('asana_database', target.project) }}
+          {%- else -%} {{ var('asana_database', target.dbname) }}
+          {%- endif -%}
+    schema:  |
+          {%- if target.name == "prod" -%} {{ var('asana_schema', target.dataset) }}
+          {%- else -%} {{ var('asana_schema', target.schema) }}
+          {%- endif -%}
+    loaded_at_field: mt_loaded_at
+    loader: node_loader
+    meta:
+      contains_pii: true
+      owner: "p.perlepes@gmail.com"
+    tables:
+      - name: asana_users_raw
+        description: "Users table from extraction."
+        columns:
+          - name: id
+            description: "The user unique id"
+            tests:
+              - unique
+              - not_null
+          - name: info
+            description: "The full JSON user object returned from the Asana API."
+            tests:
+              - not_null
+          - name: mt_loaded_at
+            description: "Timestamp of when the system loaded the data from the API to the database."
+            tests:
+              - not_null
+          - name: mt_load_process
+            description: "Process identifier for the source system to allow tracing."
+            tests:
+              - not_null:
+                  config:
+                    severity: warn
+      - name: asana_projects_raw
+        description: "Projects table from extraction."
+        columns:
+          - name: id
+            description: "The project unique id"
+            tests:
+              - not_null
+          - name: updated_at
+            description: "The time the project was modified at the current state."
+          - name: info
+            description: "The full JSON project object returned from the Asana API."
+            tests:
+              - not_null
+          - name: mt_loaded_at
+            description: "Timestamp of when the system loaded the data from the API to the database."
+            tests:
+              - not_null
+          - name: mt_load_process
+            description: "Process identifier for the source system to allow tracing."
+            tests:
+              - not_null:
+                  config:
+                    severity: warn
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              combination_of_columns:
+                - id
+                - updated_at
+      - name: asana_tasks_raw
+        description: "Tasks table from extraction."
+        columns:
+          - name: id
+            description: "The task unique id."
+            tests:
+              - not_null
+          - name: updated_at
+            description: "The time the project was modified at the current state."
+          - name: info
+            description: "The full JSON task object returned from the Asana API."
+            tests:
+              - not_null
+          - name: mt_loaded_at
+            description: "Timestamp of when the system loaded the data from the API to the database."
+            tests:
+              - not_null
+          - name: mt_load_process
+            description: "Process identifier for the source system to allow tracing."
+            tests:
+              - not_null:
+                  config:
+                    severity: warn
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              combination_of_columns:
+                - id
+                - updated_at

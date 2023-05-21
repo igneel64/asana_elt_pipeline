@@ -1,0 +1,7 @@
+version: 2
+
+models:
+  - name: stg_asana__tasks_current
+    description: "Tasks model with the current state of each task. Columns are the same as `asana_tasks_source`."
+  - name: stg_asana__project_members_junction
+    description: "Junction type table with joined project and user information."

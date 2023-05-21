@@ -1,0 +1,33 @@
+version: 2
+
+macros:
+  - name: extract_jsonb_external_resource
+    description: "Extract resource identifiers from JSONB arrays. Mostly used later on with `array_agg` joined with source data."
+    arguments:
+      - name: target_attribute_name
+        type: string
+        description: "The attribute/key name to extract from the JSONB structure."
+      - name: target_model_name
+        type: string
+        description: "The target model to extract from." 
+      - name: result_column_name
+        type: string
+        description: "The column name the resource ids will be stored as."
+  - name: extract_repeated_record_values
+    description: "Extract resource identifiers from repeated records. Used similarly as `extract_jsonb_external_resource` but for BigQuery."
+    arguments:
+      - name: target_attribute_name
+        type: string
+        description: "The attribute/key name to extract from the record structure."
+      - name: target_model_name
+        type: string
+        description: "The target model to extract from." 
+      - name: result_column_name
+        type: string
+        description: "The column name the resource ids will be stored as."
+  - name: is_current_calculation
+    description: "Calculate the `is_current` status column. Mostly used later on joined with source data."
+    arguments:
+      - name: target_model_name
+        type: string
+        description: "The target model to calculate from." 

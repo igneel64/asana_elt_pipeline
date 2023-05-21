@@ -1,0 +1,32 @@
+# Name your project! Project names should contain only lowercase characters
+# and underscores. A good package name should reflect your organization's
+# name or the intended use of these models
+name: "dbt_asana"
+version: "1.0.0"
+config-version: 2
+require-dbt-version: [">=1.5.0", "<2.0.0"]
+
+profile: "sample"
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  dbt_asana:
+    sources:
+      asana:
+        +materialized: table
+
+# Define database and schema variables
+# vars:
+#   asana_database: your_database_name
+#   asana_schema: your_schema_name 

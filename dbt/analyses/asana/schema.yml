@@ -1,0 +1,9 @@
+version: 2
+
+analyses:
+  - name: task_completion_metrics
+  - name: task_distribution_bins
+  - name: task_distribution
+  - name: tasks_by_assignee_per_month
+  - name: tasks_by_assignee
+  - name: tasks_by_year

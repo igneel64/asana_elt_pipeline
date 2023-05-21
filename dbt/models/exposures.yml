@@ -1,0 +1,17 @@
+exposures:
+
+  - name: asana_reporting_dashboard
+    label: Asana reporting
+    type: dashboard
+    maturity: low
+    url: "Coming soon"
+    description: "A simple graph dump using the `analyses` queries."
+
+    depends_on:
+      - ref('stg_asana__tasks_current')
+      - ref('asana_users_source')
+      - ref('date_dim')
+
+    owner:
+      name: Peter Perlepes
+      email: p.perlepes@gmail.com

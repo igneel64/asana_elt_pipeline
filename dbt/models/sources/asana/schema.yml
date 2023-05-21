@@ -1,0 +1,74 @@
+version: 2
+
+models:
+  - name: asana_users_source
+    description: "User extracted information table."
+    columns:
+      - name: user_id
+        description: "The user unique id."
+      - name: user_name
+        description: "The user name."
+      - name: user_email
+        description: "The user email."
+  - name: asana_projects_source
+    description: "Project extracted information table."
+    columns:
+      - name: project_id
+        description: "The project unique id."
+      - name: project_is_archived
+        description: "If the project is archived."
+      - name: project_is_completed
+        description: "If the project is completed."
+      - name: project_completed_at
+        description: "The time the project was completed at."
+      - name: project_created_at
+        description: "The time the project was created at."
+      - name: project_modified_at
+        description: "The time the project was modified at the current state."
+      - name: project_members
+        description: "The project members, each matching a User identifier."
+        tests:
+          - relationship_in_array:
+              to: ref('asana_users_source')
+              field: user_id
+      - name: project_name
+        description: "The project name."
+      - name: is_current
+        description: "If the entry represents the current state."
+  - name: asana_tasks_source
+    description: "Task extracted information table."
+    columns:
+      - name: task_id
+        description: "The task unique id."
+      - name: task_due_at
+        description: "The UTC date and time on which this task is due, or null if the task has no due time."
+      - name: task_due_on
+        description: "The localized date on which this task is due, or null if the task has no due date."
+      - name: task_is_completed
+        description: "If a task is marked as completed."
+      - name: task_completed_at
+        description: "The time at which this task was completed, or null if the task is incomplete."
+      - name: task_created_at
+        description: "The time at which this task was created."
+      - name: task_modified_at
+        description: "The time at which this task was modified."
+      - name: task_assignee_id
+        description: "The task assignee ID. It should match a User identifier."
+        tests:
+          - relationships:
+              to: ref('asana_users_source')
+              field: user_id
+      - name: task_assignee_status
+        description: "Deprecated."
+      - name: task_name
+        description: "The task title."
+      - name: task_creation_to_completion_days
+        description: "The time in days took from starting to completion of the task. Starts from 0, for same day completion."
+      - name: is_current
+        description: "If the entry represents the current state."
+      - name: task_projects
+        description: "Array of Project identifiers this task belongs to."
+        tests:
+          - relationship_in_array:
+              to: ref('asana_projects_source')
+              field: project_id

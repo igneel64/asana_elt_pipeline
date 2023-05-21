@@ -1,0 +1,21 @@
+config:
+  send_anonymous_usage_stats: False
+
+sample:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      threads: 1
+      host: localhost
+      port: 5432
+      user: "{{ env_var('DBT_USER') }}"
+      pass: "{{ env_var('DBT_PASS') }}"
+      dbname: "{{ env_var('DATABASE_NAME') }}"
+      schema: "{{ env_var('DATABASE_SCHEMA') }}"
+    prod:
+      type: bigquery
+      method: service-account
+      project: "{{ env_var('GCP_PROJECT_ID') }}"
+      dataset: "{{ env_var('GCP_PROJECT_DATASET') }}"
+      keyfile: "./bigquery_keyfile.json"
